@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:news_app/models/news_channel_headline_model.dart';
 import 'package:news_app/view_model/news_view_model.dart';
 
+enum FilterList { bbcNews, aryNews, abcNews, reuters, cnn, alJazeera }
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -18,7 +20,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   NewsViewModel newsViewModel = NewsViewModel();
 
+  FilterList? selectedMenu;
+
   final format = DateFormat('MMM dd, yyyy');
+
+  String name = 'bbc-news';
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +49,61 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 30,
           ),
         ),
+        actions: [
+          PopupMenuButton<FilterList>(
+            initialValue: selectedMenu,
+            onSelected: (FilterList item) {
+              if (FilterList.bbcNews.name == item.name) {
+                name = 'bbc-news';
+              }
+              if (FilterList.aryNews.name == item.name) {
+                name = 'ary-news';
+              }
+              if (FilterList.alJazeera.name == item.name) {
+                name = 'al-jazeera-english';
+              }
+              if (FilterList.abcNews.name == item.name) {
+                name = 'abc-news';
+              }
+              if (FilterList.reuters.name == item.name) {
+                name = 'reuters';
+              }
+              if (FilterList.cnn.name == item.name) {
+                name = 'cnn';
+              }
+
+              setState(() {
+                selectedMenu = item;
+              });
+            },
+            itemBuilder: (context) => <PopupMenuEntry<FilterList>>[
+              PopupMenuItem(
+                value: FilterList.bbcNews,
+                child: Text("BBC News"),
+              ),
+              PopupMenuItem(
+                value: FilterList.aryNews,
+                child: Text("Ary News"),
+              ),
+              PopupMenuItem(
+                value: FilterList.alJazeera,
+                child: Text("Al Jazeera News"),
+              ),
+              PopupMenuItem(
+                value: FilterList.abcNews,
+                child: Text("ABC News"),
+              ),
+              PopupMenuItem(
+                value: FilterList.reuters,
+                child: Text("Reuters News"),
+              ),
+              PopupMenuItem(
+                value: FilterList.cnn,
+                child: Text("CNN News"),
+              ),
+            ],
+          ),
+        ],
       ),
       body: ListView(
         children: [
@@ -50,7 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
             height: height * .55,
             width: width,
             child: FutureBuilder<NewsChannelHeadlines>(
-              future: newsViewModel.fetchedNewsChannelHeadlineApi(),
+              future: newsViewModel.fetchedNewsChannelHeadlineApi(
+                  channelName: name),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -81,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: CachedNetworkImage(
                                 imageUrl: news.urlToImage.toString(),
                                 fit: BoxFit.cover,
-                                //placeholder: (context,url)=>spinKit2,
+                                placeholder: (context, url) => spinKit2,
                                 errorWidget: (context, url, error) => Icon(
                                   Icons.error,
                                   color: Colors.red,
