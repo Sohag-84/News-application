@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:news_app/models/news_channel_headline_model.dart';
 import 'package:news_app/view_model/news_view_model.dart';
+import 'package:news_app/views/categories_screen.dart';
 
 enum FilterList { bbcNews, aryNews, abcNews, reuters, cnn, alJazeera }
 
@@ -42,7 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: true,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CategoriesScreen(),
+            ),
+          ),
           icon: Image.asset(
             "images/category_icon.png",
             height: 30,
