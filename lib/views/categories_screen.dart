@@ -141,16 +141,15 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                           Text(
                                             news.source!.name.toString(),
                                             style: GoogleFonts.poppins(
-                                              fontSize: 14,
+                                              fontSize: 11,
                                               color: Colors.black54,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
                                           Text(
                                             format.format(dateTime),
-                                            maxLines: 3,
                                             style: GoogleFonts.poppins(
-                                              fontSize: 15,
+                                              fontSize: 11,
                                               color: Colors.black54,
                                               fontWeight: FontWeight.w500,
                                             ),
